@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, MapPin, Mail } from 'lucide-react';
 
 export default function SiteFooter({ site }) {
@@ -49,6 +50,28 @@ export default function SiteFooter({ site }) {
           </div>
         </div>
       </div>
+
+      {site.footer?.equal_housing !== false && (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.4rem',
+          padding: '1.25rem 1rem',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+        }}>
+          <Image
+            src="/images/equal-housing-opportunity.jpg"
+            alt="Equal Housing Opportunity"
+            width={48}
+            height={48}
+            style={{ filter: 'invert(1) brightness(0.7)', opacity: 0.75 }}
+          />
+          <span style={{ fontSize: '0.65rem', letterSpacing: '0.08em', opacity: 0.55, textTransform: 'uppercase' }}>
+            Equal Housing Opportunity
+          </span>
+        </div>
+      )}
 
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
