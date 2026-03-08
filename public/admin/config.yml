@@ -58,29 +58,32 @@ collections:
 
   - name: "units"
     label: "Apartment Units"
-    file: "content/units.yaml"
-    fields:
-      - label: "Units"
-        name: "units"
-        widget: "list"
+    files:
+      - name: "all-units"
+        label: "All Units"
+        file: "content/units.yaml"
         fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "URL Slug", name: "slug", widget: "string" }
-          - { label: "Price Range", name: "price_range", widget: "string" }
-          - { label: "Square Feet", name: "sq_ft", widget: "number", required: false }
-          - { label: "Availability", name: "availability", widget: "select", options: ["Available", "Waitlist", "Call for Info"] }
-          - { label: "Description", name: "description", widget: "text", required: false }
-          - { label: "Floor Plan Image", name: "floor_plan_image", widget: "image", required: false }
-          - label: "Photos"
-            name: "images"
+          - label: "Units"
+            name: "units"
             widget: "list"
-            required: false
-            field: { label: "Image", name: "image", widget: "image" }
-          - { label: "Video URL (YouTube embed)", name: "video_url", widget: "string", required: false }
-          - label: "Features"
-            name: "features"
-            widget: "list"
-            field: { label: "Feature", name: "feature", widget: "string" }
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "URL Slug", name: "slug", widget: "string" }
+              - { label: "Price Range", name: "price_range", widget: "string" }
+              - { label: "Square Feet", name: "sq_ft", widget: "number", required: false, value_type: "int" }
+              - { label: "Availability", name: "availability", widget: "select", options: ["Available", "Waitlist", "Call for Info"] }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "Floor Plan Image", name: "floor_plan_image", widget: "image", required: false }
+              - label: "Photos"
+                name: "images"
+                widget: "list"
+                required: false
+                field: { label: "Image", name: "image", widget: "image" }
+              - { label: "Video URL (YouTube embed)", name: "video_url", widget: "string", required: false }
+              - label: "Features"
+                name: "features"
+                widget: "list"
+                field: { label: "Feature", name: "feature", widget: "string" }
 
   - name: "settings"
     label: "Site Settings"
@@ -104,5 +107,5 @@ collections:
             name: "colors"
             widget: "object"
             fields:
-              - { label: "Primary", name: "primary", widget: "color", default: "#1a2744" }
-              - { label: "Secondary (Accent)", name: "secondary", widget: "color", default: "#c9a96e" }
+              - { label: "Primary (hex)", name: "primary", widget: "string", default: "#1a2744" }
+              - { label: "Secondary/Accent (hex)", name: "secondary", widget: "string", default: "#c9a96e" }
