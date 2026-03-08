@@ -1,0 +1,28 @@
+site_title: Grace Street Towers
+phone_number: (773) 871-1845
+email: manager@gracestreettowers.com
+address:
+  street: 635 W. Grace St.
+  city: Chicago
+  state: IL
+  zip: "60613"
+marketing_knobs:
+  hero_cta: View Apartments
+  secondary_cta: Schedule a Tour
+colors:
+  primary: "#1a2744"
+  secondary: "#c9a96e"
+nav:
+  - label: Home
+    href: /
+  - label: Floor Plans
+    href: /floor-plans
+  - label: Amenities
+    href: /amenities
+  - label: Neighborhood
+    href: /neighborhood
+  - label: Contact
+    href: /contact
+footer:
+  equal_housing: true
+  disclaimer: Pricing and availability subject to change without notice. Contact the leasing office for current details.

@@ -5,20 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "next": "^14.2.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
+    "js-yaml": "^4.1.0",
     "gray-matter": "^4.0.3",
-    "remark": "^15.0.1",
-    "remark-html": "^16.0.1"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/react": "^18.3.0",
-    "typescript": "^5.4.0"
+    "marked": "^12.0.0",
+    "lucide-react": "^0.370.0"
   }
 }
