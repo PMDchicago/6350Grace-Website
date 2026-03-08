@@ -1,0 +1,8 @@
+{
+  "title": "Studio",
+  "priceFrom": "$1,350",
+  "priceTo": "$1,550",
+  "description": "Efficient open-concept studios with full kitchens, ample closet space, and stunning city or lake views.",
+  "features": ["Efficient open floor plan", "Full kitchen with gas range", "Ample closet space", "City or lake views available"],
+  "order": 1
+}
