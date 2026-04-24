@@ -21,6 +21,8 @@ nav:
     href: /amenities
   - label: Neighborhood
     href: /neighborhood
+  - label: Gallery
+    href: /gallery
   - label: Contact
     href: /contact
 footer:

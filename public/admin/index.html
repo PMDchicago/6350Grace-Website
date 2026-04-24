@@ -2,11 +2,34 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Content Manager | Grace Street Towers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grace Street Towers CMS</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Redirect the top-nav "Media" button to our custom media manager
+    (function() {
+      function hijackMedia() {
+        var links = document.querySelectorAll('a[href], button, span');
+        links.forEach(function(el) {
+          if (el.textContent.trim() === 'Media' && !el.dataset.hijacked) {
+            el.dataset.hijacked = 'true';
+            el.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              e.stopImmediatePropagation();
+              window.location.href = '/admin/media.html';
+            }, true);
+          }
+        });
+      }
+      var interval = setInterval(hijackMedia, 500);
+      var observer = new MutationObserver(hijackMedia);
+      observer.observe(document.body, { childList: true, subtree: true });
+      setTimeout(function() { clearInterval(interval); }, 30000);
+    })();
+  </script>
 </body>
 </html>

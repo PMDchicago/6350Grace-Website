@@ -6,94 +6,18 @@ media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
 collections:
-  - name: "pages"
-    label: "Pages"
+  - name: "site_metadata"
+    label: "Global Settings"
+    delete: false
+    editor:
+      preview: false
     files:
-      - name: "home"
-        label: "Home Page"
-        file: "content/pages/home.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "SEO Description", name: "seo_description", widget: "text" }
-          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
-          - label: "Features"
-            name: "features"
-            widget: "list"
-            fields:
-              - { label: "Icon", name: "icon", widget: "select", options: ["building", "utilities", "location", "commute"] }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Description", name: "desc", widget: "text" }
-          - { label: "Body", name: "body", widget: "markdown" }
-
-      - name: "amenities"
-        label: "Amenities"
-        file: "content/pages/amenities.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "SEO Description", name: "seo_description", widget: "text" }
-          - { label: "Body", name: "body", widget: "markdown" }
-
-      - name: "neighborhood"
-        label: "Neighborhood"
-        file: "content/pages/neighborhood.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "SEO Description", name: "seo_description", widget: "text" }
-          - label: "Highlights"
-            name: "highlights"
-            widget: "list"
-            fields:
-              - { label: "Icon", name: "icon", widget: "string" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Text", name: "text", widget: "text" }
-          - { label: "Body", name: "body", widget: "markdown" }
-
-      - name: "contact"
-        label: "Contact"
-        file: "content/pages/contact.md"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "SEO Description", name: "seo_description", widget: "text" }
-          - { label: "Body", name: "body", widget: "markdown" }
-
-  - name: "units"
-    label: "Apartment Units"
-    files:
-      - name: "all-units"
-        label: "All Units"
-        file: "content/units.yaml"
-        fields:
-          - label: "Units"
-            name: "units"
-            widget: "list"
-            fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "URL Slug", name: "slug", widget: "string" }
-              - { label: "Price Range", name: "price_range", widget: "string" }
-              - { label: "Square Feet", name: "sq_ft", widget: "number", required: false, value_type: "int" }
-              - { label: "Availability", name: "availability", widget: "select", options: ["Available", "Waitlist", "Call for Info"] }
-              - { label: "Description", name: "description", widget: "text", required: false }
-              - { label: "Floor Plan Image", name: "floor_plan_image", widget: "image", required: false }
-              - label: "Photos"
-                name: "images"
-                widget: "list"
-                required: false
-                field: { label: "Image", name: "image", widget: "image" }
-              - { label: "Video URL (YouTube embed)", name: "video_url", widget: "string", required: false }
-              - label: "Features"
-                name: "features"
-                widget: "list"
-                field: { label: "Feature", name: "feature", widget: "string" }
-
-  - name: "settings"
-    label: "Site Settings"
-    files:
-      - name: "general"
-        label: "General Settings"
+      - name: "settings"
+        label: "Site Settings"
         file: "content/site.yaml"
         fields:
           - { label: "Site Title", name: "site_title", widget: "string" }
-          - { label: "Phone Number", name: "phone_number", widget: "string" }
+          - { label: "Phone Number", name: "phone_number", widget: "string", hint: "Example: (773) 871-1845" }
           - { label: "Email", name: "email", widget: "string" }
           - label: "Address"
             name: "address"
@@ -103,9 +27,111 @@ collections:
               - { label: "City", name: "city", widget: "string" }
               - { label: "State", name: "state", widget: "string" }
               - { label: "ZIP", name: "zip", widget: "string" }
-          - label: "Colors"
+          - label: "Marketing Knobs"
+            name: "marketing_knobs"
+            widget: "object"
+            fields:
+              - { label: "Primary CTA", name: "hero_cta", widget: "string", default: "View Apartments" }
+              - { label: "Secondary CTA", name: "secondary_cta", widget: "string", default: "Schedule a Tour" }
+              - { label: "Show Announcement Banner", name: "announcement_enabled", widget: "boolean", default: false }
+              - { label: "Announcement Text", name: "announcement_text", widget: "text", required: false }
+          - label: "Brand Colors"
             name: "colors"
             widget: "object"
             fields:
               - { label: "Primary (hex)", name: "primary", widget: "string", default: "#1a2744" }
-              - { label: "Secondary/Accent (hex)", name: "secondary", widget: "string", default: "#c9a96e" }
+              - { label: "Secondary (hex)", name: "secondary", widget: "string", default: "#c9a96e" }
+          - label: "Footer"
+            name: "footer"
+            widget: "object"
+            fields:
+              - { label: "Equal Housing", name: "equal_housing", widget: "boolean", default: true }
+              - { label: "Disclaimer", name: "disclaimer", widget: "text" }
+
+  - name: "unit_types"
+    label: "Unit Types"
+    files:
+      - name: "units"
+        label: "Units"
+        file: "content/units.yaml"
+        fields:
+          - label: "Units"
+            name: "units"
+            widget: "list"
+            summary: "{{fields.title}} • {{fields.price_range}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string", hint: "Studio, 1 Bedroom, 2 Bedroom" }
+              - { label: "URL Slug", name: "slug", widget: "string", hint: "URL-safe identifier (e.g. studio, one-bedroom)" }
+              - { label: "Floor Plan Image", name: "floor_plan", widget: "image", required: false, hint: "Upload or select a floor plan image" }
+              - { label: "Photos Folder", name: "photos_folder", widget: "string", required: false, hint: "Folder name under images/ (e.g. studio, 1br-plan-a). Upload photos via Media Manager." }
+              - { label: "Price Range", name: "price_range", widget: "string", hint: "Example: $1,350 – $1,550" }
+              - { label: "Square Footage", name: "sq_ft", widget: "number", required: false, value_type: "int" }
+              - { label: "Availability", name: "availability", widget: "select", options: ["Available", "Waitlist", "Call for Info"], default: "Available" }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "Video URL (YouTube embed)", name: "video_url", widget: "string", required: false }
+              - { label: "Features", name: "features", widget: "list", field: { label: "Feature", name: "feature", widget: "string" } }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "home"
+        label: "Home"
+        file: "content/pages/home.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "SEO Description", name: "seo_description", widget: "text", required: false }
+          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+          - label: "Features"
+            name: "features"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "select", options: ["building", "utilities", "location", "commute"] }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "desc", widget: "text" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "amenities"
+        label: "Amenities"
+        file: "content/pages/amenities.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "SEO Description", name: "seo_description", widget: "text", required: false }
+          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "neighborhood"
+        label: "Neighborhood"
+        file: "content/pages/neighborhood.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "SEO Description", name: "seo_description", widget: "text", required: false }
+          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+          - label: "Highlights"
+            name: "highlights"
+            widget: "list"
+            fields:
+              - { label: "Icon", name: "icon", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Text", name: "text", widget: "text" }
+          - { label: "Body", name: "body", widget: "markdown" }
+      - name: "contact"
+        label: "Contact"
+        file: "content/pages/contact.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "SEO Description", name: "seo_description", widget: "text", required: false }
+          - { label: "Hero Image", name: "hero_image", widget: "image", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "gallery"
+    label: "Gallery"
+    files:
+      - name: "gallery_images"
+        label: "Gallery Images"
+        file: "content/gallery.yaml"
+        fields:
+          - label: "Images"
+            name: "images"
+            widget: "list"
+            summary: "{{fields.alt_text}}"
+            fields:
+              - { label: "Image", name: "src", widget: "image" }
+              - { label: "Alt Text", name: "alt_text", widget: "string" }

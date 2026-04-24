@@ -1,6 +1,8 @@
 units:
   - title: Studio
     slug: studio
+    floor_plan: null
+    photos_folder: null
     price_range: "$1,350 – $1,550"
     sq_ft: null
     availability: Available
@@ -12,12 +14,12 @@ units:
     description: >
       Well-designed studio residences with full kitchens, generous closet space,
       and sweeping views of the city or lake. Gas cooking and water included in rent.
-    floor_plan_image: null
-    images: []
     video_url: null
 
   - title: One Bedroom
     slug: one-bedroom
+    floor_plan: null
+    photos_folder: null
     price_range: "$1,450 – $1,650"
     sq_ft: null
     availability: Available
@@ -29,12 +31,12 @@ units:
     description: >
       Spacious one-bedroom apartments with true separation between living and sleeping areas.
       Updated kitchens, large windows, and room to spread out.
-    floor_plan_image: null
-    images: []
     video_url: null
 
   - title: Two Bedroom
     slug: two-bedroom
+    floor_plan: null
+    photos_folder: null
     price_range: "$1,600 – $1,750"
     sq_ft: null
     availability: Available
@@ -46,6 +48,4 @@ units:
     description: >
       Generous two-bedroom layouts with room for roommates or a dedicated home office.
       Premium lake-facing units offer stunning views of Lake Michigan.
-    floor_plan_image: null
-    images: []
     video_url: null

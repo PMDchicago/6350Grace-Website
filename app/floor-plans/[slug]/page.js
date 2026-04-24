@@ -1,19 +1,18 @@
-import Link from 'next/link';
 import { getUnits, getUnitBySlug, getSiteConfig } from '../../../lib/content';
-import { CheckCircle, Building2, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowLeft, Phone, CheckCircle } from 'lucide-react';
 import CtaBand from '../../components/CtaBand';
 
 export function generateStaticParams() {
   const units = getUnits();
-  return units.map((u) => ({ slug: u.slug }));
+  return units.map(u => ({ slug: u.slug || u.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') }));
 }
 
 export function generateMetadata({ params }) {
   const unit = getUnitBySlug(params.slug);
-  if (!unit) return { title: 'Unit Not Found' };
   return {
-    title: `${unit.title} | Floor Plans`,
-    description: unit.description || `${unit.title} apartments at Grace Street Towers.`,
+    title: unit ? `${unit.title} — Grace Street Towers` : 'Unit Details',
+    description: unit ? `${unit.title} apartment at Grace Street Towers. ${unit.price_range}/month.` : ''
   };
 }
 
@@ -24,116 +23,110 @@ export default function UnitDetailPage({ params }) {
   if (!unit) {
     return (
       <main>
-        <section className="page-hero">
-          <div className="container"><h1>Unit Not Found</h1></div>
+        <section className="section">
+          <div className="container" style={{ textAlign: 'center', padding: '4rem 1.5rem' }}>
+            <h1>Unit Not Found</h1>
+            <Link href="/floor-plans">← Back to Floor Plans</Link>
+          </div>
         </section>
       </main>
     );
   }
 
+  const photos = unit.photos || [];
   const isAvailable = unit.availability === 'Available';
-  const hasFloorPlan = !!unit.floor_plan_image;
-  const hasImages = unit.images && unit.images.length > 0;
-  const hasVideo = !!unit.video_url;
 
   return (
     <main>
-      <section className="page-hero">
+      <section className="section">
         <div className="container">
-          <Link href="/floor-plans" style={{ color: 'var(--accent)', fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.75rem' }}>
-            <ArrowLeft size={14} /> All Floor Plans
+          <Link href="/floor-plans" className="unit-back-link">
+            <ArrowLeft size={16} /> All Floor Plans
           </Link>
-          <h1>{unit.title}</h1>
-          <p>{unit.price_range} per month</p>
-        </div>
-      </section>
 
-      <section className="unit-detail">
-        <div className="container">
-          <div className="unit-detail-grid">
-            {/* Left: Media */}
-            <div className="unit-detail-media">
-              {/* Floor Plan */}
-              <div className="unit-floor-plan">
-                {hasFloorPlan ? (
-                  <img src={unit.floor_plan_image} alt={`${unit.title} floor plan`} />
-                ) : (
-                  <div className="unit-floor-plan-placeholder">
-                    <Building2 size={48} strokeWidth={1.25} />
-                    <span>Floor Plan Coming Soon</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Photo Gallery */}
-              {hasImages && (
-                <div className="unit-images-grid">
-                  {unit.images.map((img, i) => (
-                    <img key={i} src={img} alt={`${unit.title} photo ${i + 1}`} loading="lazy" />
-                  ))}
-                </div>
-              )}
-
-              {/* Video Tour */}
-              {hasVideo && (
-                <div className="unit-video">
-                  <iframe
-                    src={unit.video_url}
-                    title={`${unit.title} video tour`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                </div>
-              )}
+          <div className="unit-detail-header">
+            <div>
+              <h1 className="unit-detail-title">{unit.title}</h1>
+              <span className={`availability-badge ${isAvailable ? 'badge-available' : 'badge-waitlist'}`}>
+                {unit.availability || 'Call for Info'}
+              </span>
             </div>
+            <div className="unit-detail-price">
+              <span className="unit-price">{unit.price_range}</span>
+              <span className="unit-price-sub">per month</span>
+              {unit.sq_ft ? <span className="muted" style={{ fontSize: '0.85rem' }}>{unit.sq_ft} sq ft</span> : null}
+            </div>
+          </div>
 
-            {/* Right: Info */}
-            <div className="unit-detail-info">
-              <div>
-                <span className={`availability-badge ${isAvailable ? 'badge-available' : 'badge-waitlist'}`}>
-                  {unit.availability || 'Call for Info'}
-                </span>
-              </div>
+          {unit.description && (
+            <p style={{ marginBottom: '2rem', color: 'var(--muted)', maxWidth: '700px', lineHeight: '1.7' }}>
+              {unit.description}
+            </p>
+          )}
 
-              <h1>{unit.title}</h1>
-
-              <div className="unit-detail-pricing">
-                {unit.price_range} <span>/mo</span>
-              </div>
-
-              {unit.sq_ft && (
-                <p className="muted">{unit.sq_ft} sq ft</p>
-              )}
-
-              {unit.description && (
-                <p className="unit-detail-desc">{unit.description}</p>
-              )}
-
-              {Array.isArray(unit.features) && unit.features.length > 0 && (
-                <div>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem' }}>Features</h3>
-                  <ul className="unit-features">
-                    {unit.features.map((f) => (
-                      <li key={f}>
-                        <CheckCircle size={16} style={{ color: 'var(--green)', flexShrink: 0 }} strokeWidth={2.5} />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div style={{ marginTop: '1rem' }}>
-                <Link href="/contact" className="btn-primary" style={{ display: 'inline-flex' }}>
-                  Schedule a Tour
-                </Link>
+          {unit.floor_plan && (
+            <div className="unit-detail-floorplan">
+              <h2 className="unit-detail-section-title">Floor Plan</h2>
+              <div className="unit-detail-floorplan-img">
+                <img src={unit.floor_plan} alt={`${unit.title} floor plan`} />
               </div>
             </div>
+          )}
+
+          {photos.length > 0 && (
+            <div className="unit-detail-photos">
+              <h2 className="unit-detail-section-title">Interior Photos</h2>
+              <div className="unit-detail-photo-grid">
+                {photos.map((photo, i) => (
+                  <figure key={i} className="unit-detail-photo-item">
+                    <img src={photo.src} alt={photo.alt_text || 'Unit interior'} loading="lazy" />
+                    {photo.alt_text && <figcaption>{photo.alt_text}</figcaption>}
+                  </figure>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {unit.video_url && (
+            <div style={{ marginBottom: '2.5rem' }}>
+              <h2 className="unit-detail-section-title">Video Tour</h2>
+              <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <iframe
+                  src={unit.video_url}
+                  title={`${unit.title} video tour`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                />
+              </div>
+            </div>
+          )}
+
+          {Array.isArray(unit.features) && unit.features.length > 0 && (
+            <div className="unit-detail-features">
+              <h2 className="unit-detail-section-title">Features</h2>
+              <ul className="unit-features" style={{ maxWidth: '500px' }}>
+                {unit.features.map((f) => (
+                  <li key={f}>
+                    <CheckCircle size={15} style={{ color: 'var(--green)', flexShrink: 0 }} strokeWidth={2.5} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="unit-detail-cta">
+            <a href={`tel:${site.phone_number?.replace(/[^0-9]/g, '') || ''}`} className="btn-primary">
+              <Phone size={15} /> Call {site.phone_number}
+            </a>
+            <Link href="/contact" className="btn-primary">
+              Schedule a Tour
+            </Link>
           </div>
         </div>
       </section>
-
       <CtaBand site={site} />
     </main>
   );
